@@ -35,8 +35,55 @@ Code example from `Agustinus Kristiadi <https://wiseodd.github.io/techblog/2016/
 Convolution
 -----------
 
-Be the first to `contribute! <https://github.com/bfortuner/ml-cheatsheet>`__
+In CNN, a convolution is a linear operation that involves multiplication of weight (kernel/filter) with the input and it does most of the heavy lifting job.
 
+Convolution layer consists of 2 major component 1. Kernel(Filter) 2. Stride 
+
+1. Kernel (Filter): A convolution layer can have more than one filter. The size of the filter should be smaller than the size of input dimension. It is intentional as it allows filter to be applied multiple times at difference point (position) on the input.Filters are helpful in understanding and identifying important features from given input. By applying different filters (more than one filter) on the same input helps in extracting different features from given input. Output from multiplying filter with the input gives Two dimensional array. As such, the output array from this operation is called "Feature Map".  
+
+2. Stride: This property controls the movement of filter over input. when the value is set to 1, then filter moves 1 column at a time over input. When the value is set to 2 then the filer jump 2 columns at a time as filter moves over the input. 
+
+
+.. rubric:: Code
+
+.. code-block:: python
+
+      # this code demonstate on how Convolution works
+      # Assume we have a image of 4 X 4 and a filter fo 2 X 2 and Stride = 1 
+      
+      def conv_filter_ouput(input_img_section,filter_value):
+            # this method perfromas the multiplication of input and filter 
+            # returns singular value
+
+            value = 0 
+            for i in range(len(filter_value)):
+                  for j in range(len(filter_value[0])):
+                        value = value + (input_img_section[i][j]*filter_value[i][j])
+            return value
+
+      img_input = [[260.745, 261.332, 112.27 , 262.351],
+       [260.302, 208.802, 139.05 , 230.709],
+       [261.775,  93.73 , 166.118, 122.847],
+       [259.56 , 232.038, 262.351, 228.937]]   
+
+      filter = [[1,0],
+         [0,1]]
+      
+      filterX,filterY = len(filter),len(filter[0])
+      filtered_result = [] 
+      for i in range(0,len(img_mx)-filterX+1):
+      clm = []
+      for j in range(0,len(img_mx[0])-filterY+1):
+            clm.append(conv_filter_ouput(img_mx[i:i+filterX,j:j+filterY],filter))
+      filtered_result.append(clm)
+      
+      print(filtered_result)
+
+.. image:: images/cnn_filter_output.png
+      :align: center
+
+.. rubric:: Further reading
+- `cs231n reference  <http://cs231n.github.io/convolutional-networks/>`_
 
 Dropout
 -------
@@ -101,9 +148,40 @@ Be the first to `contribute! <https://github.com/bfortuner/ml-cheatsheet>`__
 Pooling
 -------
 
-Max and average pooling layers.
+Pooling layers often take convolution layers as input. A complicated dataset with many object will require a large number of filters, each responsible finding pattern in an image so the dimensionally of convolutional layer can get large. It will cause an increase of parameters, which can lead to over-fitting. Pooling layers are methods for reducing this high dimensionally. Just like the convolution layer, there is kernel size and stride. The size of the kernel is smaller than the feature map. For most of the cases the size of the kernel will be 2X2 and the stride of 2. There are mainly two types of pooling layers.
 
-Be the first to `contribute! <https://github.com/bfortuner/ml-cheatsheet>`__
+The first type is max pooling layer.
+Max pooling layer will take a stack of feature maps (convolution layer) as input. The value of the node in the max pooling layer is calculated by just the maximum of the pixels contained in the window.
+
+The other type of pooling layer is the Average Pooling layer.
+Average pooling layer calculates the average of pixels contained in the window. Its not used often but you may see this used in applications for which smoothing an image is preferable.
+
+.. rubric:: Code
+.. code-block:: python
+
+    def max_pooling(feature_map, size=2, stride=2):
+    	"""
+	:param feature_map: Feature matrix of shape (height, width, layers)
+    	:param size: size of kernal
+    	:param stride: movement speed of kernal
+    	:return: max-pooled feature vector
+	""" 
+    	pool_shape = (feature_map.shape[0]//stride, feature_map.shape[1]//stride, feature_map.shape[-1]) #shape of output
+    	pool_out = numpy.zeros(pool_shape) 
+    	for layer in range(feature_map.shape[-1]):
+        	#for each layer
+        	row = 0
+        	for r in numpy.arange(0,feature_map.shape[0], stride):
+        	    col = 0
+        	    for c in numpy.arange(0, feature_map.shape[1], stride):
+        	        pool_out[row, col, layer] = numpy.max([feature_map[c:c+size,  r:r+size, layer]])
+        	        col = col + 1
+        	    row = row +1
+    	return pool_out
+
+.. image:: images/maxpool.png                       
+       :align: center                              
+       :width: 512 px  
 
 
 RNN

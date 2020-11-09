@@ -17,7 +17,7 @@ Cross-entropy loss, or log loss, measures the performance of a classification mo
 .. image:: images/cross_entropy.png
     :align: center
 
-The graph above shows the range of possible loss values given a true observation (isDog = 1). As the predicted probability approaches 1, log loss slowly decreases. As the predicted probability decreases, however, the log loss increases rapidly. Log loss penalizes both types of errors, but especially those predications that are confident and wrong!
+The graph above shows the range of possible loss values given a true observation (isDog = 1). As the predicted probability approaches 1, log loss slowly decreases. As the predicted probability decreases, however, the log loss increases rapidly. Log loss penalizes both types of errors, but especially those predictions that are confident and wrong!
 
 .. note::
 
@@ -68,13 +68,23 @@ Used for classification.
 Huber
 =====
 
-Typically used for regression. It's less sensitive to outliers than the MSE.
+Typically used for regression. It's less sensitive to outliers than the MSE as it treats error as square only inside an interval.
+
+.. math::
+
+  L_{\delta}=\left\{\begin{matrix}
+  \frac{1}{2}(y - \hat{y})^{2} & if \left | (y - \hat{y})  \right | < \delta\\
+  \delta ((y - \hat{y}) - \frac1 2 \delta) & otherwise
+  \end{matrix}\right.
 
 .. rubric:: Code
 
 .. literalinclude:: ../code/loss_functions.py
       :pyobject: Huber
 
+Further information can be found at `Huber Loss in Wikipedia`_.  
+
+.. _`Huber Loss in Wikipedia`: https://en.wikipedia.org/wiki/Huber_loss
 
 .. _kl_divergence:
 

@@ -124,11 +124,11 @@ Given our simple linear equation :math:`y = mx + b`, we can calculate MSE as:
 Gradient descent
 ----------------
 
-To minimize MSE we use :doc:`gradient_descent` to calculate the gradient of our cost function. [TODO: Slightly longer explanation].
+To minimize MSE we use :doc:`gradient_descent` to calculate the gradient of our cost function. Gradient descent consists of looking at the error that our weight currently gives us, using the derivative of the cost function to find the gradient (The slope of the cost function using our current weight), and then changing our weight to move in the direction opposite of the gradient. We need to move in the opposite direction of the gradient since the gradient points up the slope instead of down it, so we move in the opposite direction to try to decrease our error. 
 
 .. rubric:: Math
 
-There are two :ref:`parameters <glossary_parameters>` (coefficients) in our cost function we can control: weight :math:`m` and bias :math:`b`. Since we need to consider the impact each one has on the final prediction, we use partial derivatives. To find the partial derivatives, we use the :ref:`chain_rule`. We need the chain rule because :math:`(y - (mx + b))^2` is really 2 nested functions: the inner function :math:`y - mx + b` and the outer function :math:`x^2`.
+There are two :ref:`parameters <glossary_parameters>` (coefficients) in our cost function we can control: weight :math:`m` and bias :math:`b`. Since we need to consider the impact each one has on the final prediction, we use partial derivatives. To find the partial derivatives, we use the :ref:`chain_rule`. We need the chain rule because :math:`(y - (mx + b))^2` is really 2 nested functions: the inner function :math:`y - (mx + b)` and the outer function :math:`x^2`.
 
 Returning to our cost function:
 
@@ -136,20 +136,66 @@ Returning to our cost function:
 
     f(m,b) =  \frac{1}{N} \sum_{i=1}^{n} (y_i - (mx_i + b))^2
 
-We can calculate the gradient of this cost function as:
+Using the following:
 
 .. math::
 
+    (y_i - (mx_i + b))^2 = A(B(m,b))
+
+We can split the derivative into
+
+.. math::
+
+    A(x) = x^2
+
+    \frac{df}{dx} = A'(x) = 2x
+
+and
+
+.. math::
+
+    B(m,b) = y_i - (mx_i + b) = y_i - mx_i - b
+
+    \frac{dx}{dm} = B'(m) = 0 - x_i - 0 = -x_i
+
+    \frac{dx}{db} = B'(b) = 0 - 0 - 1 = -1
+
+And then using the :ref:`chain_rule` which states:
+
+.. math::
+
+    \frac{df}{dm} = \frac{df}{dx} \frac{dx}{dm}
+
+    \frac{df}{db} = \frac{df}{dx} \frac{dx}{db}
+
+We then plug in each of the parts to get the following derivatives
+
+.. math::
+
+    \frac{df}{dm} = A'(B(m,f)) B'(m) = 2(y_i - (mx_i + b)) \cdot -x_i
+
+    \frac{df}{db} = A'(B(m,f)) B'(b) = 2(y_i - (mx_i + b)) \cdot -1
+
+We can calculate the gradient of this cost function as:
+
+.. math::
+  \begin{align}
   f'(m,b) =
-     \begin{bmatrix}
-       \frac{df}{dm}\\
-       \frac{df}{db}\\
-      \end{bmatrix}
-  =
-     \begin{bmatrix}
+    \begin{bmatrix}
+      \frac{df}{dm}\\
+      \frac{df}{db}\\
+    \end{bmatrix}
+  &=
+    \begin{bmatrix}
+      \frac{1}{N} \sum -x_i \cdot 2(y_i - (mx_i + b)) \\
+      \frac{1}{N} \sum -1 \cdot 2(y_i - (mx_i + b)) \\
+    \end{bmatrix}\\
+  &=
+    \begin{bmatrix}
        \frac{1}{N} \sum -2x_i(y_i - (mx_i + b)) \\
        \frac{1}{N} \sum -2(y_i - (mx_i + b)) \\
-      \end{bmatrix}
+    \end{bmatrix}
+  \end{align}
 
 .. rubric:: Code
 
@@ -184,7 +230,7 @@ Training
 
 Training a model is the process of iteratively improving your prediction equation by looping through the dataset multiple times, each time updating the weight and bias values in the direction indicated by the slope of the cost function (gradient). Training is complete when we reach an acceptable error threshold, or when subsequent training iterations fail to reduce our cost.
 
-Before training we need to initializing our weights (set default values), set our :ref:`hyperparameters <glossary_hyperparameters>` (learning rate and number of iterations), and prepare to log our progress over each iteration.
+Before training we need to initialize our weights (set default values), set our :ref:`hyperparameters <glossary_hyperparameters>` (learning rate and number of iterations), and prepare to log our progress over each iteration.
 
 .. rubric:: Code
 
@@ -197,12 +243,12 @@ Before training we need to initializing our weights (set default values), set ou
           weight,bias = update_weights(radio, sales, weight, bias, learning_rate)
 
           #Calculate cost for auditing purposes
-          cost = cost_function(features, targets, weights)
+          cost = cost_function(radio, sales, weight, bias)
           cost_history.append(cost)
 
           # Log Progress
           if i % 10 == 0:
-              print "iter: "+str(i) + " cost: "+str(cost)
+              print "iter={:d}    weight={:.2f}    bias={:.4f}    cost={:.2}".format(i, weight, bias, cost)
 
       return weight, bias, cost_history
 
@@ -346,7 +392,8 @@ Our predict function outputs an estimate of sales given our current weights (coe
     weights - (3, 1)
     predictions - (200,1)
     **
-    return np.dot(features,weights)
+    predictions = np.dot(features, weights)
+    return predictions
 
 
 Initialize weights
@@ -376,10 +423,10 @@ Now we need a cost function to audit how our model is performing. The math is th
 
   def cost_function(features, targets, weights):
       **
-      Features:(200,3)
-      Targets: (200,1)
-      Weights:(3,1)
-      Returns 1D matrix of predictions
+      features:(200,3)
+      targets: (200,1)
+      weights:(3,1)
+      returns average squared error among predictions
       **
       N = len(targets)
 
@@ -441,7 +488,7 @@ And that's it! Multivariate linear regression.
 Simplifying with matrices
 -------------------------
 
-The gradient descent code above has a lot of duplication. Can we improve it somehow? One way to refactor would be to loop through our features and weights--allowing our function handle any number of features. However there is another even better technique: *vectorized gradient descent*.
+The gradient descent code above has a lot of duplication. Can we improve it somehow? One way to refactor would be to loop through our features and weights--allowing our function to handle any number of features. However there is another even better technique: *vectorized gradient descent*.
 
 .. rubric:: Math
 
@@ -458,6 +505,9 @@ We use the same formula as above, but instead of operating on a single feature a
   X = [
       [x1, x2, x3]
       [x1, x2, x3]
+      .
+      .
+      .
       [x1, x2, x3]
   ]
 

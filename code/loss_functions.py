@@ -10,10 +10,10 @@ import numpy as np
 ### Functions ###
 
 def CrossEntropy(yHat, y):
-    if yHat == 1:
-      return -log(y)
+    if y == 1:
+      return -log(yHat)
     else:
-      return -log(1 - y)
+      return -log(1 - yHat)
 
 
 def Dice(yHat, y):
@@ -27,16 +27,21 @@ def Hinge(yHat, y):
     return np.max(0, 1 - yHat * y)
 
 
-def Huber(yHat, y):
-    pass
+def Huber(yHat, y, delta=1.):
+    return np.where(np.abs(y-yHat) < delta,.5*(y-yHat)**2 , delta*(np.abs(y-yHat)-0.5*delta))
 
 
 def KLDivergence(yHat, y):
-    pass
+    """
+    :param yHat:
+    :param y:
+    :return: KLDiv(yHat || y)
+    """
+    return np.sum(yHat * np.log((yHat / y)))
 
 
 def L1(yHat, y):
-    return np.sum(np.absolute(yHat - y))
+    return np.sum(np.absolute(yHat - y)) / y.size
 
 
 def L2(yHat, y):

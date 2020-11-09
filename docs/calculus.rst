@@ -130,7 +130,7 @@ Let's write code to calculate the derivative of any function :math:`f(x)`. We te
   computed, actual   # = 6.0001, 6        # pretty close if you ask me...
 
 
-In general it's preferable to use the math to obtain exact derivative formulas, but keep in mind you can always compute derivatives numerically by computing the rise-over-run for a "small step" :math:`h`. 
+In general it's preferable to use the math to obtain exact `derivative formulas <https://www.teachoo.com/9722/1227/Differentiation-Formulas/category/Finding-derivative-of-a-function-by-chain-rule/>`_, but keep in mind you can always compute derivatives numerically by computing the rise-over-run for a "small step" :math:`h`. 
 
 
 Machine learning use cases
@@ -205,11 +205,13 @@ The derivative of :math:`f(x)` would equal:
 
   \frac{dh}{db} = 3b^2
 
-3. Swap out the placeholder variable for the inner function
+3. Swap out the placeholder variable (b) for the inner function (g(x))
 
 .. math::
-
+  \begin{gathered}
+  3(x^2)^2 \\
   3x^4
+  \end{gathered}
 
 4. Return the product of the two derivatives
 
@@ -330,7 +332,6 @@ Here are the steps to calculate the gradient for a multivariable function:
                 & = \lim_{h\to0}\frac{b((x+h)(x+h)) - bx^2}{h} \\
                 & = \lim_{h\to0}\frac{b((x^2 + xh + hx + h^2)) - bx^2}{h} \\
                 & = \lim_{h\to0}\frac{bx^2 + 2bxh + bh^2 - bx^2}{h} \\
-                & = \lim_{h\to0}\frac{2bxh + bh^2}{h} \\
                 & = \lim_{h\to0}\frac{2bxh + bh^2}{h} \\
                 & = \lim_{h\to0} 2bx + bh \\
   \end{align}
@@ -530,8 +531,7 @@ Solving :math:`3c=1`, we find :math:`c=\frac{1}{3}` and so the integral function
 
 You can verify that :math:`\frac{d}{dx}\left[\frac{1}{3}x^3 + C\right] = x^2`.
 
-
-
+You can also verify Integrals using maths. Here is a set of `formulas <https://www.teachoo.com/5643/728/Integration-Formulas---Trig--Definite-Integrals-Properties-and-more/category/Miscellaneous/>`_ for your reference 
 
 
 Applications of integration

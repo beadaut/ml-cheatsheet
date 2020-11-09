@@ -273,7 +273,7 @@ If our model is working, we should see our cost decrease after every iteration.
 
 .. rubric:: Accuracy
 
-:ref:`Accuracy <glossary_accuracy>` measures how correct our predictions were. In this case we simple compare predicted labels to true labels and divide by the total.
+:ref:`Accuracy <glossary_accuracy>` measures how correct our predictions were. In this case we simply compare predicted labels to true labels and divide by the total.
 
 .. literalinclude:: ../code/logistic_regression.py
     :language: python
@@ -313,10 +313,19 @@ For each sub-problem, we select one class (YES) and lump all the others into a s
 Softmax activation
 ------------------
 
-something about softmax here...
+The softmax function (softargmax or normalized exponential function) is a function that takes as input a vector of K real numbers, and normalizes it into a probability distribution consisting of K probabilities proportional to the exponentials of the input numbers. That is, prior to applying softmax, some vector components could be negative, or greater than one; and might not sum to 1; but after applying softmax, each component will be in the interval [ 0 , 1 ] , and the components will add up to 1, so that they can be interpreted as probabilities.
+The standard (unit) softmax function is defined by the formula 
+
+.. math::
+
+  \begin{align}
+   σ(z_i) = \frac{e^{z_{(i)}}}{\sum_{j=1}^K e^{z_{(j)}}}\ \ \ for\ i=1,.,.,.,K\ and\ z=z_1,.,.,.,z_K
+  \end{align}
+
+In words: we apply the standard exponential function to each element :math:`z_i` of the input vector :math:`z` and normalize these values by dividing by the sum of all these exponentials; this normalization ensures that the sum of the components of the output vector :math:`σ(z)` is 1. [9]_
 
 
-Scipy example
+Scikit-Learn example
 -------------
 
 Let's compare our performance to the ``LogisticRegression`` model provided by scikit-learn [8]_.
@@ -337,3 +346,4 @@ Let's compare our performance to the ``LogisticRegression`` model provided by sc
 .. [6] http://math.stackexchange.com/questions/78575/derivative-of-sigmoid-function-sigma-x-frac11e-x
 .. [7] https://en.wikipedia.org/wiki/Monotoniconotonic_function
 .. [8] http://scikit-learn.org/stable/modules/linear_model.html#logistic-regression>
+.. [9] https://en.wikipedia.org/wiki/Softmax_function

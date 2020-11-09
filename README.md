@@ -1,12 +1,15 @@
-# Machine Learning Cheatsheet
+# Machine Learning Glossary
 
-[View The Cheatsheet](http://ml-cheatsheet.readthedocs.io/en/latest/)
+## Looking for fellow maintainers!
+Apologies for my non-responsiveness. :( I've been heads down at Cruise, buiding ML infra for self-driving cars, and haven't reviewed this repo in forever. Looks like we're getting `54k monthly active users` now and I think the repo deserves more attention. Let me know if you would be interested in joining as a maintainer with priviledges to merge PRs. 
+
+[View The Glossary](http://ml-cheatsheet.readthedocs.io/en/latest/)
 
 ## How To Contribute
 
 1. Clone Repo
 ```
-git clone https://github.com/bfortuner/ml-cheatsheet.git
+git clone https://github.com/bfortuner/ml-glossary.git
 ```
 
 2. Install Dependencies
@@ -23,11 +26,23 @@ pip3 install sphinx_rtd_theme
 pip3 install recommonmark
 ```
 3. Preview Changes
+
+If you are using make build.
+
 ```
-cd ml-cheatsheet
+cd ml-glossary
 cd docs
 make html
 ```
+
+For Windows. 
+
+```
+cd ml-glossary
+cd docs
+build.bat html
+```
+
 
 4. Verify your changes by opening the `index.html` file in `_build/`
 
@@ -36,7 +51,7 @@ make html
 
 ### Short for time?
 
-Feel free to raise an [issue](https://github.com/bfortuner/ml-cheatsheet/issues) to correct errors or contribute content without a pull request.
+Feel free to raise an [issue](https://github.com/bfortuner/ml-glossary/issues) to correct errors or contribute content without a pull request.
 
 
 ## Style Guide
@@ -52,7 +67,7 @@ Excellent entries will also include:
 2. **Code** - python/numpy snippets, classes, or functions
 3. **Equations** - Formatted with Latex
 
-The goal of the cheatsheet is to present content in the most accessible way possible, with a heavy emphasis on visuals and interactive diagrams. That said, in the spirit of rapid prototyping, it's okay to to submit a "rough draft" without visuals or code. We expect other readers will enhance your submission over time.
+The goal of the glossary is to present content in the most accessible way possible, with a heavy emphasis on visuals and interactive diagrams. That said, in the spirit of rapid prototyping, it's okay to to submit a "rough draft" without visuals or code. We expect other readers will enhance your submission over time.
 
 
 ## Why RST and not Markdown?

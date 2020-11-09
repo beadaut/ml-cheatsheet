@@ -6,13 +6,13 @@ Backpropagation
 
 .. contents:: :local:
 
-The goals of backpropagation are straightforward: adjust each weight in the network in proportion to how much it contributes to overall error. If we iteratively reduce each weight's error, eventually we’ll have a series of weights the produce good predictions.
+The goals of backpropagation are straightforward: adjust each weight in the network in proportion to how much it contributes to overall error. If we iteratively reduce each weight's error, eventually we’ll have a series of weights that produce good predictions.
 
 
 Chain rule refresher
 ====================
 
-As seen above, foward propagation can be viewed as a long series of nested equations. If you think of feed forward this way, then backpropagation is merely an application the :ref:`chain_rule` to find the :ref:`derivative` of cost with respect to any variable in the nested equation. Given a forward propagation function:
+As seen above, foward propagation can be viewed as a long series of nested equations. If you think of feed forward this way, then backpropagation is merely an application of :ref:`chain_rule` to find the :ref:`derivative` of cost with respect to any variable in the nested equation. Given a forward propagation function:
 
 .. math::
 
@@ -142,7 +142,7 @@ Let’s return to our formula for the derivative of cost with respect to the out
 
   C'(W_O) = (\hat{y} - y) \cdot R'(Z_O) \cdot H
 
-We know we can replace the first part with our equation for output layer error :math:`E_h`. H represents the hidden layer activation.
+We know we can replace the first part with our equation for output layer error :math:`E_o`. H represents the hidden layer activation.
 
 .. math::
 
